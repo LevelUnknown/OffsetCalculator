@@ -1,0 +1,208 @@
+/* ===== RESET SOME DEFAULTS ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* White background */
+    color: #333;               /* Dark text */
+    margin: 0;
+  }
+  
+  /* ===== TITLE BAR ===== */
+  .title-bar {
+    background-color: #004400; /* Dark green bar at top */
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  /* HEADINGS */
+  h2, h3, h4, h5 {
+    color: #003300; /* Default heading color is dark green */
+  }
+  
+  /* ===== LAYOUT ===== */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px; /* spacing below the title bar */
+  }
+  
+  /* LEFT PANEL */
+  .left-panel {
+    flex: 1 1 600px;
+    background-color: #004400; /* darker green background */
+    color: #fff;               /* white text on green */
+    padding: 20px;
+    border-radius: 8px;
+    min-width: 300px;
+  }
+  
+  .left-panel h2 {
+    margin-bottom: 10px;
+    color: #fff; /* ensure heading is white */
+  }
+  
+  .loan-amount-input {
+    font-size: 1.5rem;
+    width: 100%;
+    max-width: 250px;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: right;
+    color: #333; /* dark text color inside input */
+  }
+  
+  .monthly-repayment {
+    font-size: 2rem;
+    margin: 20px 0 10px 0; /* top, right, bottom, left */
+    display: inline-block;
+  }
+  
+  .monthly-repayment strong {
+    margin-right: 10px;
+  }
+  
+  #repaymentFrequency {
+    background-color: #004400;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    padding: 5px;
+    vertical-align: middle; /* aligns with the baseline of the text */
+  }
+  
+  /* RIGHT PANEL */
+  .right-panel {
+    flex: 1 1 300px;
+    background-color: #f9f9f9; /* light background */
+    padding: 20px;
+    border-radius: 8px;
+    min-width: 250px;
+    color: #333; /* text color on light bg */
+  }
+  
+  .option-group {
+    margin-bottom: 20px;
+  }
+  
+  .option-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .option-group select,
+  .option-group input {
+    width: 100%;
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Sliders */
+  .slider {
+    width: 100%;
+    margin: 10px 0;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none; /* Chrome/Safari/WebKit */
+    -moz-appearance: none;    /* Firefox */
+    appearance: none;         /* Standard property */
+  }
+  .slider::-webkit-slider-thumb {
+    background: #004400;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+  }
+  .slider::-moz-range-thumb {
+    background: #004400;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+  }
+  
+  /* Extra Repayments section */
+  .extra-repayments {
+    margin-top: 20px;
+  }
+  .extra-repayments h4 {
+    margin-bottom: 5px;
+  }
+  .extra-repayments input {
+    width: 100%;
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: right;
+  }
+  
+  /* ===== REPAYMENT CHART SECTION ===== */
+  .repayment-chart-section {
+    margin: 0 20px 40px 20px;
+  }
+  .chart-heading {
+    text-align: left;      /* Align left now */
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #003300;
+  }
+  #repaymentChart {
+    display: block;
+    max-width: 600px;
+    width: 100%;
+    height: 300px;
+  }
+  
+  .chart-heading select {
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 4px;
+    vertical-align: middle;
+  }
+  
+  /* ===== SUMMARY SECTION ===== */
+  .summary {
+    margin: 0 20px 40px 20px;
+  }
+  
+  .summary table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .summary table thead {
+    background-color: #003300; /* darker green */
+    color: #fff;               /* white text on green header */
+  }
+  
+  .summary table th,
+  .summary table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  
+  .summary table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mortgage Calculator with Offset</title>
+
+  <!-- Include Chart.js from a CDN, so the chart can work -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Link to the external CSS file -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Title Bar -->
+  <div class="title-bar">
+    <svg
+      width="220"
+      height="40"
+      viewBox="0 0 240 40"
+      xmlns="http://www.w3.org/2000/svg"
+      style="display: block; margin: 0 auto;"
+    >
+      <rect x="0" y="0" width="220" height="40" rx="8" fill="#004400"></rect>
+      <text
+        x="50%"
+        y="50%"
+        text-anchor="middle"
+        alignment-baseline="middle"
+        fill="#ffffff"
+        font-family="Arial, sans-serif"
+        font-size="26"
+      >
+        <tspan font-weight="bold">OFFSET</tspan> Calculator
+      </text>
+    </svg>
+  </div>
+
+  <!-- Container for left and right panels -->
+  <div class="container">
+    <!-- LEFT PANEL: Loan Amount, Payment Info -->
+    <div class="left-panel">
+      <h2>How much would you like to borrow?</h2>
+
+      <input
+        id="loanAmount"
+        type="text"
+        class="loan-amount-input"
+        value="$1,600,000"
+      />
+      <input
+        id="loanAmountRange"
+        type="range"
+        min="50000"
+        max="5000000"
+        step="50000"
+        value="1600000"
+        class="slider"
+      />
+
+      <p class="monthly-repayment">
+        <strong>Estimated Repayments:</strong>
+        <span id="monthlyRepaymentValue">$9,894</span>
+        <select id="repaymentFrequency">
+          <option value="monthly" selected>Monthly</option>
+          <option value="fortnightly">Fortnightly</option>
+          <option value="weekly">Weekly</option>
+        </select>
+      </p>
+    </div>
+
+    <!-- RIGHT PANEL: Loan Options, Extra Repayments -->
+    <div class="right-panel">
+      <div class="option-group">
+        <label for="offsetBalance">Offset account balance</label>
+        <input id="offsetBalance" type="text" value="$0" />
+        <input
+          id="offsetBalanceRange"
+          type="range"
+          min="0"
+          max="2000000"
+          step="50000"
+          value="0"
+          class="slider"
+        />
+      </div>
+
+      <div class="option-group">
+        <label for="repaymentTypeSelect">Repayment type</label>
+        <select id="repaymentTypeSelect">
+          <option value="principal_interest" selected>Principal & Interest</option>
+          <option value="interest_only">Interest Only</option>
+        </select>
+      </div>
+
+      <!-- Removed "Interest rate type" field entirely -->
+
+      <div class="option-group">
+        <label>Interest rate (%)</label>
+        <input id="interestRate" type="text" value="6.29%" />
+        <input
+          id="interestRateRange"
+          type="range"
+          min="0"
+          max="15"
+          step="0.01"
+          value="6.29"
+          class="slider"
+        />
+      </div>
+
+      <!-- Single loanTerm (years) -->
+      <div class="option-group">
+        <label for="loanTerm">Loan term (years)</label>
+        <input id="loanTerm" type="number" value="30" />
+        <input
+          id="loanTermRange"
+          type="range"
+          min="5"
+          max="40"
+          step="1"
+          value="30"
+          class="slider"
+        />
+      </div>
+
+      <div class="extra-repayments">
+        <h4>Extra monthly repayments</h4>
+        <input id="extraRepayment" type="text" value="$0" />
+        <input
+          id="extraRepaymentRange"
+          type="range"
+          min="0"
+          max="10000"
+          step="50"
+          value="0"
+          class="slider"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Section -->
+  <div class="repayment-chart-section">
+    <p class="chart-heading">
+      What your repayments could look like
+      <select id="chartPeriodSelect">
+        <option value="month" selected>Monthly</option>
+        <option value="year">Yearly</option>
+      </select>
+    </p>
+    <canvas id="repaymentChart" width="600" height="300"></canvas>
+  </div>
+
+  <!-- SUMMARY SECTION -->
+  <div class="summary">
+    <h3>A summary of your loan</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Minimum monthly repayments</th>
+          <th>Total interest charged</th>
+          <th>Total repayments</th>
+          <th>Loan term</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="summaryRepayment">$9,894</td>
+          <td id="summaryInterest">$1,961,529</td>
+          <td id="summaryTotal">$3,561,529</td>
+          <td id="summaryTerm">30 years</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Link to your script.js -->
+  <script src="script.js"></script>
+</body>
+</html>

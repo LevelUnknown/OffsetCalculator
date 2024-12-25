@@ -6,34 +6,40 @@
 */
 
 /* ==== DOM REFERENCES ==== */
-const loanAmountEl         = document.getElementById('loanAmount');
-const offsetBalanceEl      = document.getElementById('offsetBalance');
-const interestRateEl       = document.getElementById('interestRate');
-const loanTermEl           = document.getElementById('loanTerm');
-const extraRepaymentEl     = document.getElementById('extraRepayment');
+const loanAmountEl = document.getElementById('loanAmount');
+const offsetBalanceEl = document.getElementById('offsetBalance');
+const interestRateEl = document.getElementById('interestRate');
+const loanTermEl = document.getElementById('loanTerm');
+const extraRepaymentEl = document.getElementById('extraRepayment');
 const repaymentFrequencyEl = document.getElementById('repaymentFrequency');
-const repaymentTypeSelect  = document.getElementById('repaymentTypeSelect');
+const repaymentTypeSelect = document.getElementById('repaymentTypeSelect');
 
 const monthlyRepaymentValueEl = document.getElementById('monthlyRepaymentValue');
 
 // Range sliders
-const loanAmountRange      = document.getElementById('loanAmountRange');
-const offsetBalanceRange   = document.getElementById('offsetBalanceRange');
-const interestRateRange    = document.getElementById('interestRateRange');
-const loanTermRange        = document.getElementById('loanTermRange');
-const extraRepaymentRange  = document.getElementById('extraRepaymentRange');
+const loanAmountRange = document.getElementById('loanAmountRange');
+const offsetBalanceRange = document.getElementById('offsetBalanceRange');
+const interestRateRange = document.getElementById('interestRateRange');
+const loanTermRange = document.getElementById('loanTermRange');
+const extraRepaymentRange = document.getElementById('extraRepaymentRange');
 
 // Summary elements
-const summaryRepaymentEl   = document.getElementById('summaryRepayment');
-const summaryInterestEl    = document.getElementById('summaryInterest');
-const summaryTotalEl       = document.getElementById('summaryTotal');
-const summaryTermEl        = document.getElementById('summaryTerm');
+const summaryRepaymentEl = document.getElementById('summaryRepayment');
+const summaryInterestEl = document.getElementById('summaryInterest');
+const summaryTotalEl = document.getElementById('summaryTotal');
+const summaryTermEl = document.getElementById('summaryTerm');
 
 // Chart
-const chartCanvas          = document.getElementById('repaymentChart');
-let mortgageChart          = null;
-const chartPeriodSelect    = document.getElementById('chartPeriodSelect');
-let amortizationData       = [];
+const chartCanvas = document.getElementById('repaymentChart');
+let mortgageChart = null;
+const chartPeriodSelect = document.getElementById('chartPeriodSelect');
+let amortizationData = [];
+
+// Error Message
+const errorMessageEl = document.getElementById('errorMessage');
+
+// Reset Button
+const resetButton = document.getElementById('resetButton');
 
 /*
   We'll store the user's "base monthly extra" behind the scenes. 
@@ -54,9 +60,9 @@ function parseCurrencyToNumber(str) {
   return parseFloat(numeric) || 0;
 }
 function formatPercentage(num) {
-  return num.toLocaleString('en-US', { 
-    minimumFractionDigits: 0, 
-    maximumFractionDigits: 2 
+  return num.toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
   }) + '%';
 }
 function parsePercentageToNumber(str) {
@@ -87,8 +93,8 @@ function getPaymentsPerYear() {
        and user picks fortnightly =>  (300 * 12)/26 = ~138.46
 */
 function getPerPeriodExtra() {
-  const freq   = repaymentFrequencyEl.value;
-  const monthly= baseExtraMonthly;
+  const freq = repaymentFrequencyEl.value;
+  const monthly = baseExtraMonthly;
 
   // if monthly => just monthly
   if (freq === 'monthly') {
@@ -109,7 +115,7 @@ function getPerPeriodExtra() {
 */
 function calculateBasePayment(principal, periodicRate, totalPeriods, repayType) {
   if (repayType === 'interest_only') {
-    return principal * periodicRate; 
+    return principal * periodicRate;
   }
   // P&I
   if (periodicRate === 0) {
@@ -127,16 +133,16 @@ function calculateBasePayment(principal, periodicRate, totalPeriods, repayType) 
    We'll use the scaled extra.
 */
 function calculateMortgageEstimate() {
-  const principal       = parseCurrencyToNumber(loanAmountEl.value);
-  const offset          = parseCurrencyToNumber(offsetBalanceEl.value);
-  const interestVal     = parsePercentageToNumber(interestRateEl.value);
-  const repayType       = repaymentTypeSelect.value;
-  const periodsPerYear  = getPaymentsPerYear();
-  const years           = parseInt(loanTermEl.value) || 30;
+  const principal = parseCurrencyToNumber(loanAmountEl.value);
+  const offset = parseCurrencyToNumber(offsetBalanceEl.value);
+  const interestVal = parsePercentageToNumber(interestRateEl.value);
+  const repayType = repaymentTypeSelect.value;
+  const periodsPerYear = getPaymentsPerYear();
+  const years = parseInt(loanTermEl.value) || 30;
 
-  const effectivePrincipal= Math.max(0, principal - offset);
-  const periodicRate      = (interestVal / 100) / periodsPerYear;
-  const totalPeriods      = periodsPerYear * years;
+  const effectivePrincipal = Math.max(0, principal - offset);
+  const periodicRate = (interestVal / 100) / periodsPerYear;
+  const totalPeriods = periodsPerYear * years;
 
   // scaled extra for the chosen frequency
   const perPeriodExtra = getPerPeriodExtra();
@@ -155,18 +161,18 @@ function calculateMortgageEstimate() {
    Full period-by-period breakdown, finishing early if extra is high.
 */
 function calculateAmortizationBreakdown() {
-  const principal       = parseCurrencyToNumber(loanAmountEl.value);
-  const offset          = parseCurrencyToNumber(offsetBalanceEl.value);
-  const interestVal     = parsePercentageToNumber(interestRateEl.value);
-  const repayType       = repaymentTypeSelect.value;
-  const periodsPerYear  = getPaymentsPerYear();
-  const years           = parseInt(loanTermEl.value) || 30;
+  const principal = parseCurrencyToNumber(loanAmountEl.value);
+  const offset = parseCurrencyToNumber(offsetBalanceEl.value);
+  const interestVal = parsePercentageToNumber(interestRateEl.value);
+  const repayType = repaymentTypeSelect.value;
+  const periodsPerYear = getPaymentsPerYear();
+  const years = parseInt(loanTermEl.value) || 30;
 
-  const effectivePrincipal= Math.max(0, principal - offset);
-  const periodicRate      = (interestVal / 100) / periodsPerYear;
-  const totalPeriods      = periodsPerYear * years;
+  const effectivePrincipal = Math.max(0, principal - offset);
+  const periodicRate = (interestVal / 100) / periodsPerYear;
+  const totalPeriods = periodsPerYear * years;
 
-  let balance     = effectivePrincipal;
+  let balance = effectivePrincipal;
   const breakdown = [];
 
   // scaled extra for the chosen frequency
@@ -178,7 +184,7 @@ function calculateAmortizationBreakdown() {
   for (let p = 1; p <= totalPeriods; p++) {
     const interestPaid = balance * periodicRate;
 
-    let principalPaid  = 0;
+    let principalPaid = 0;
     if (repayType === 'interest_only') {
       const required = interestPaid;
       const additional = Math.max(0, fullPayment - required);
@@ -212,12 +218,12 @@ function calculateAmortizationBreakdown() {
 function groupDataByYear(periodData) {
   if (!periodData || periodData.length === 0) return [];
 
-  const grouped         = [];
-  const periodsPerYear  = getPaymentsPerYear();
-  let currentYear       = 1;
-  let yearInterest      = 0;
-  let yearPrincipal     = 0;
-  let lastBalance       = periodData[0].balance;
+  const grouped = [];
+  const periodsPerYear = getPaymentsPerYear();
+  let currentYear = 1;
+  let yearInterest = 0;
+  let yearPrincipal = 0;
+  let lastBalance = periodData[0].balance;
 
   for (let i = 0; i < periodData.length; i++) {
     const row = periodData[i];
@@ -229,13 +235,13 @@ function groupDataByYear(periodData) {
         principalPaid: yearPrincipal,
         balance: lastBalance,
       });
-      currentYear   = yearIndex;
-      yearInterest  = 0;
+      currentYear = yearIndex;
+      yearInterest = 0;
       yearPrincipal = 0;
     }
-    yearInterest  += row.interestPaid;
+    yearInterest += row.interestPaid;
     yearPrincipal += row.principalPaid;
-    lastBalance    = row.balance;
+    lastBalance = row.balance;
   }
   grouped.push({
     year: currentYear,
@@ -251,17 +257,17 @@ function groupDataByYear(periodData) {
    total repayment, and how many periods were actually made.
 */
 function getAmortizationSummary(breakdown) {
-  let totalInterest  = 0;
+  let totalInterest = 0;
   let totalPrincipal = 0;
 
   for (const row of breakdown) {
-    totalInterest  += row.interestPaid;
+    totalInterest += row.interestPaid;
     totalPrincipal += row.principalPaid;
   }
   const totalRepayments = totalInterest + totalPrincipal;
-  const actualPeriods   = breakdown.length;
-  const periodsPerYear  = getPaymentsPerYear();
-  const actualYears     = actualPeriods / periodsPerYear;
+  const actualPeriods = breakdown.length;
+  const periodsPerYear = getPaymentsPerYear();
+  const actualYears = actualPeriods / periodsPerYear;
 
   return {
     totalInterest,
@@ -276,73 +282,73 @@ function getAmortizationSummary(breakdown) {
    Build or rebuild Chart.js stacked bar
 */
 function buildChart() {
-  if (mortgageChart) {
-    mortgageChart.destroy();
-  }
-  if (!amortizationData || amortizationData.length === 0) return;
-
-  let labels, interestData, principalData;
-
-  if (chartPeriodSelect.value === 'year') {
-    labels       = amortizationData.map(d => d.year);
-    interestData = amortizationData.map(d => Math.round(d.interestPaid));
-    principalData= amortizationData.map(d => Math.round(d.principalPaid));
-  } else {
-    labels       = amortizationData.map(d => d.period);
-    interestData = amortizationData.map(d => Math.round(d.interestPaid));
-    principalData= amortizationData.map(d => Math.round(d.principalPaid));
-  }
-
-  mortgageChart = new Chart(chartCanvas, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Interest Paid',
-          data: interestData,
-          backgroundColor: 'rgba(204, 153, 0, 0.8)',
-          borderColor: 'rgba(204, 153, 0, 1)',
-          borderWidth: 1,
-        },
-        {
-          label: 'Principal Paid',
-          data: principalData,
-          backgroundColor: 'rgba(153, 204, 51, 0.8)',
-          borderColor: 'rgba(153, 204, 51, 1)',
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      scales: {
-        x: {
-          type: 'category',
-          stacked: true,
-          display: true,
-        },
-        y: {
-          stacked: true,
-          beginAtZero: true
-        }
-      },
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          callbacks: {
-            label: (context) => {
-              return `${context.dataset.label}: $${context.parsed.y.toLocaleString()}`;
-            }
-          }
-        }
-      }
+    if (mortgageChart) {
+        mortgageChart.destroy();
     }
-  });
-}
+    if (!amortizationData || amortizationData.length === 0) return;
 
+    let labels, interestData, principalData;
+
+    if (chartPeriodSelect.value === 'year') {
+        labels = amortizationData.map(d => d.year);
+        interestData = amortizationData.map(d => Math.round(d.interestPaid));
+        principalData = amortizationData.map(d => Math.round(d.principalPaid));
+    } else {
+        labels = amortizationData.map(d => d.period);
+        interestData = amortizationData.map(d => Math.round(d.interestPaid));
+        principalData = amortizationData.map(d => Math.round(d.principalPaid));
+    }
+
+    mortgageChart = new Chart(chartCanvas, {
+        type: 'bar',
+        data: {
+        labels,
+        datasets: [
+            {
+            label: 'Interest Paid',
+            data: interestData,
+            backgroundColor: 'rgba(204, 153, 0, 0.8)',
+            borderColor: 'rgba(204, 153, 0, 1)',
+            borderWidth: 1,
+            },
+            {
+            label: 'Principal Paid',
+            data: principalData,
+            backgroundColor: 'rgba(153, 204, 51, 0.8)',
+            borderColor: 'rgba(153, 204, 51, 1)',
+            borderWidth: 1,
+            },
+        ],
+        },
+        options: {
+        responsive: true, // Make the chart responsive
+        maintainAspectRatio: false, // Allow the chart to scale freely
+        scales: {
+            x: {
+            type: 'category',
+            stacked: true,
+            display: true,
+            },
+            y: {
+            stacked: true,
+            beginAtZero: true,
+            },
+        },
+        plugins: {
+            legend: {
+            display: false,
+            },
+            tooltip: {
+            callbacks: {
+                label: (context) => {
+                return `${context.dataset.label}: $${context.parsed.y.toLocaleString()}`;
+                },
+            },
+            },
+        },
+        },
+    });
+}
 /*
    MAIN UI Update:
    1) Quick naive estimate
@@ -351,33 +357,40 @@ function buildChart() {
    4) Build chart 
 */
 function updateUI() {
-  // 1) quick estimate
-  const { actualPayment } = calculateMortgageEstimate();
-  monthlyRepaymentValueEl.textContent = '$' + Math.round(actualPayment).toLocaleString();
+  try {
+    // Clear any previous error messages
+    errorMessageEl.textContent = '';
 
-  // 2) breakdown
-  const periodData = calculateAmortizationBreakdown();
+    // 1) quick estimate
+    const { actualPayment } = calculateMortgageEstimate();
+    monthlyRepaymentValueEl.textContent = '$' + Math.round(actualPayment).toLocaleString();
 
-  // 3) summarize
-  const {
-    totalInterest,
-    totalRepayments,
-    actualYears
-  } = getAmortizationSummary(periodData);
+    // 2) breakdown
+    const periodData = calculateAmortizationBreakdown();
 
-  // For "Minimum monthly repayments," we are currently using the actual payment
-  summaryRepaymentEl.textContent = '$' + Math.round(actualPayment).toLocaleString();
-  summaryInterestEl.textContent  = '$' + Math.round(totalInterest).toLocaleString();
-  summaryTotalEl.textContent     = '$' + Math.round(totalRepayments).toLocaleString();
-  summaryTermEl.textContent      = actualYears.toFixed(1) + ' years';
+    // 3) summarize
+    const {
+      totalInterest,
+      totalRepayments,
+      actualYears
+    } = getAmortizationSummary(periodData);
 
-  // 4) chart data
-  if (chartPeriodSelect.value === 'year') {
-    amortizationData = groupDataByYear(periodData);
-  } else {
-    amortizationData = periodData;
+    // For "Minimum monthly repayments," we are currently using the actual payment
+    summaryRepaymentEl.textContent = '$' + Math.round(actualPayment).toLocaleString();
+    summaryInterestEl.textContent = '$' + Math.round(totalInterest).toLocaleString();
+    summaryTotalEl.textContent = '$' + Math.round(totalRepayments).toLocaleString();
+    summaryTermEl.textContent = actualYears.toFixed(1) + ' years';
+
+    // 4) chart data
+    if (chartPeriodSelect.value === 'year') {
+      amortizationData = groupDataByYear(periodData);
+    } else {
+      amortizationData = periodData;
+    }
+    buildChart();
+  } catch (error) {
+    errorMessageEl.textContent = 'Error: Invalid input. Please check your values.';
   }
-  buildChart();
 }
 
 /* 
@@ -406,7 +419,7 @@ interestRateEl.addEventListener('blur', handlePercentageBlur);
 extraRepaymentEl.addEventListener('blur', (e) => {
   const val = parseCurrencyToNumber(e.target.value);
   baseExtraMonthly = val;        // store the user input as monthly base
-  e.target.value   = formatCurrency(val);
+  e.target.value = formatCurrency(val);
   updateUI();
 });
 
@@ -440,13 +453,32 @@ loanTermRange?.addEventListener('input', () => {
 });
 extraRepaymentRange?.addEventListener('input', () => {
   const rawVal = parseFloat(extraRepaymentRange.value) || 0;
-  baseExtraMonthly = rawVal; 
+  baseExtraMonthly = rawVal;
   extraRepaymentEl.value = formatCurrency(rawVal);
   updateUI();
 });
 
 // Chart period
 chartPeriodSelect.addEventListener('change', updateUI);
+
+// Reset Button
+resetButton.addEventListener('click', () => {
+  loanAmountEl.value = '$1,600,000';
+  loanAmountRange.value = 1600000;
+  offsetBalanceEl.value = '$0';
+  offsetBalanceRange.value = 0;
+  interestRateEl.value = '6.29%';
+  interestRateRange.value = 6.29;
+  loanTermEl.value = 30;
+  loanTermRange.value = 30;
+  extraRepaymentEl.value = '$0';
+  extraRepaymentRange.value = 0;
+  repaymentFrequencyEl.value = 'monthly';
+  repaymentTypeSelect.value = 'principal_interest';
+  chartPeriodSelect.value = 'month';
+  baseExtraMonthly = 0;
+  updateUI();
+});
 
 // Init
 // Make sure baseExtraMonthly matches what's on page load

@@ -2,50 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mortgage Calculator with Offset</title>
-
-  <!-- Include Chart.js from a CDN, so the chart can work -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Link to the external CSS file -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Title Bar -->
   <div class="title-bar">
     <svg
-      width="220"
-      height="40"
-      viewBox="0 0 240 40"
-      xmlns="http://www.w3.org/2000/svg"
-      style="display: block; margin: 0 auto;"
-    >
-      <rect x="0" y="0" width="220" height="40" rx="8" fill="#004400"></rect>
-      <text
-        x="50%"
-        y="50%"
-        text-anchor="middle"
-        alignment-baseline="middle"
-        fill="#ffffff"
-        font-family="Arial, sans-serif"
-        font-size="26"
-      >
-        <tspan font-weight="bold">OFFSET</tspan> Calculator
-      </text>
-    </svg>
+  width="220"
+  height="40"
+  viewBox="0 0 240 40"
+  xmlns="http://www.w3.org/2000/svg"
+  style="display: block; margin: 0 auto;"
+>
+  <rect x="0" y="0" width="220" height="40" rx="8" fill="#2c3e50"></rect> <!-- Dark blue-gray background -->
+  <text
+    x="50%"
+    y="50%"
+    text-anchor="middle"
+    alignment-baseline="middle"
+    fill="#ffffff"
+    font-family="Inter, sans-serif"
+    font-size="26"
+    font-weight="700"
+  >
+    <tspan font-weight="700">OFFSET</tspan> Calculator
+  </text>
+</svg>
   </div>
 
   <!-- Container for left and right panels -->
   <div class="container">
     <!-- LEFT PANEL: Loan Amount, Payment Info -->
     <div class="left-panel">
-      <h2>How much would you like to borrow?</h2>
+      <h2>Current outstanding loan</h2>
 
       <input
         id="loanAmount"
         type="text"
         class="loan-amount-input"
         value="$1,600,000"
+        aria-label="Loan Amount"
       />
       <input
         id="loanAmountRange"
@@ -55,12 +54,13 @@
         step="50000"
         value="1600000"
         class="slider"
+        aria-label="Loan Amount Range"
       />
 
       <p class="monthly-repayment">
         <strong>Estimated Repayments:</strong>
         <span id="monthlyRepaymentValue">$9,894</span>
-        <select id="repaymentFrequency">
+        <select id="repaymentFrequency" aria-label="Repayment Frequency">
           <option value="monthly" selected>Monthly</option>
           <option value="fortnightly">Fortnightly</option>
           <option value="weekly">Weekly</option>
@@ -72,7 +72,7 @@
     <div class="right-panel">
       <div class="option-group">
         <label for="offsetBalance">Offset account balance</label>
-        <input id="offsetBalance" type="text" value="$0" />
+        <input id="offsetBalance" type="text" value="$0" aria-label="Offset Account Balance" />
         <input
           id="offsetBalanceRange"
           type="range"
@@ -81,22 +81,21 @@
           step="50000"
           value="0"
           class="slider"
+          aria-label="Offset Account Balance Range"
         />
       </div>
 
       <div class="option-group">
         <label for="repaymentTypeSelect">Repayment type</label>
-        <select id="repaymentTypeSelect">
+        <select id="repaymentTypeSelect" aria-label="Repayment Type">
           <option value="principal_interest" selected>Principal & Interest</option>
           <option value="interest_only">Interest Only</option>
         </select>
       </div>
 
-      <!-- Removed "Interest rate type" field entirely -->
-
       <div class="option-group">
         <label>Interest rate (%)</label>
-        <input id="interestRate" type="text" value="6.29%" />
+        <input id="interestRate" type="text" value="6.29%" aria-label="Interest Rate" />
         <input
           id="interestRateRange"
           type="range"
@@ -105,13 +104,13 @@
           step="0.01"
           value="6.29"
           class="slider"
+          aria-label="Interest Rate Range"
         />
       </div>
 
-      <!-- Single loanTerm (years) -->
       <div class="option-group">
         <label for="loanTerm">Loan term (years)</label>
-        <input id="loanTerm" type="number" value="30" />
+        <input id="loanTerm" type="number" value="30" aria-label="Loan Term" />
         <input
           id="loanTermRange"
           type="range"
@@ -120,12 +119,13 @@
           step="1"
           value="30"
           class="slider"
+          aria-label="Loan Term Range"
         />
       </div>
 
       <div class="extra-repayments">
         <h4>Extra monthly repayments</h4>
-        <input id="extraRepayment" type="text" value="$0" />
+        <input id="extraRepayment" type="text" value="$0" aria-label="Extra Repayments" />
         <input
           id="extraRepaymentRange"
           type="range"
@@ -134,8 +134,12 @@
           step="50"
           value="0"
           class="slider"
+          aria-label="Extra Repayments Range"
         />
       </div>
+
+      <!-- Reset Button -->
+      <button id="resetButton" class="reset-button">Reset</button>
     </div>
   </div>
 
@@ -143,12 +147,14 @@
   <div class="repayment-chart-section">
     <p class="chart-heading">
       What your repayments could look like
-      <select id="chartPeriodSelect">
+      <select id="chartPeriodSelect" aria-label="Chart Period">
         <option value="month" selected>Monthly</option>
         <option value="year">Yearly</option>
       </select>
     </p>
-    <canvas id="repaymentChart" width="600" height="300"></canvas>
+    <div class="chart-container">
+      <canvas id="repaymentChart"></canvas>
+    </div>
   </div>
 
   <!-- SUMMARY SECTION -->
@@ -173,6 +179,9 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Error Message -->
+  <div id="errorMessage" class="error-message"></div>
 
   <!-- Link to your script.js -->
   <script src="script.js"></script>

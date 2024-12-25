@@ -6,22 +6,25 @@
   }
   
   body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff; /* White background */
-    color: #333;               /* Dark text */
+    font-family: 'Inter', sans-serif; /* Modern sans-serif font */
+    background-color: #f8f9fa; /* Light gray background */
+    color: #333; /* Dark text */
     margin: 0;
+    line-height: 1.6;
   }
   
   /* ===== TITLE BAR ===== */
   .title-bar {
-    background-color: #004400; /* Dark green bar at top */
+    background-color: #2c3e50; /* Dark blue-gray */
     text-align: center;
     padding: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   }
   
-  /* HEADINGS */
-  h2, h3, h4, h5 {
-    color: #003300; /* Default heading color is dark green */
+  .title-bar svg text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    fill: #ffffff; /* White text */
   }
   
   /* ===== LAYOUT ===== */
@@ -29,64 +32,79 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 20px; /* spacing below the title bar */
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   
   /* LEFT PANEL */
   .left-panel {
     flex: 1 1 600px;
-    background-color: #004400; /* darker green background */
-    color: #fff;               /* white text on green */
-    padding: 20px;
-    border-radius: 8px;
-    min-width: 300px;
+    background-color: #ffffff; /* White background */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   }
   
   .left-panel h2 {
-    margin-bottom: 10px;
-    color: #fff; /* ensure heading is white */
+    margin-bottom: 15px;
+    color: #2c3e50; /* Dark blue-gray */
+    font-size: 1.8rem;
+    font-weight: 600;
   }
   
   .loan-amount-input {
     font-size: 1.5rem;
     width: 100%;
     max-width: 250px;
-    padding: 5px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0; /* Light gray border */
+    border-radius: 8px;
     text-align: right;
-    color: #333; /* dark text color inside input */
+    color: #333; /* Dark text */
+    transition: border-color 0.3s ease;
+  }
+  
+  .loan-amount-input:focus {
+    border-color: #3498db; /* Blue focus border */
+    outline: none;
   }
   
   .monthly-repayment {
     font-size: 2rem;
-    margin: 20px 0 10px 0; /* top, right, bottom, left */
+    margin: 20px 0 10px 0;
     display: inline-block;
+    color: #2c3e50; /* Dark blue-gray */
   }
   
   .monthly-repayment strong {
     margin-right: 10px;
+    font-weight: 600;
   }
   
   #repaymentFrequency {
-    background-color: #004400;
-    color: #fff;
-    border: 1px solid #fff;
-    border-radius: 4px;
-    padding: 5px;
-    vertical-align: middle; /* aligns with the baseline of the text */
+    background-color: #ffffff;
+    color: #2c3e50;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  #repaymentFrequency:focus {
+    border-color: #3498db; /* Blue focus border */
+    outline: none;
   }
   
   /* RIGHT PANEL */
   .right-panel {
     flex: 1 1 300px;
-    background-color: #f9f9f9; /* light background */
-    padding: 20px;
-    border-radius: 8px;
-    min-width: 250px;
-    color: #333; /* text color on light bg */
+    background-color: #ffffff; /* White background */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   }
   
   .option-group {
@@ -95,89 +113,172 @@
   
   .option-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50; /* Dark blue-gray */
   }
   
   .option-group select,
   .option-group input {
     width: 100%;
-    padding: 5px;
+    padding: 10px;
     font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #e0e0e0; /* Light gray border */
+    border-radius: 8px;
     box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  
+  .option-group select:focus,
+  .option-group input:focus {
+    border-color: #3498db; /* Blue focus border */
+    outline: none;
   }
   
   /* Sliders */
   .slider {
     width: 100%;
     margin: 10px 0;
-    height: 6px;
-    background: #ddd;
-    border-radius: 3px;
+    height: 8px;
+    background: #e0e0e0; /* Light gray track */
+    border-radius: 4px;
     outline: none;
-    -webkit-appearance: none; /* Chrome/Safari/WebKit */
-    -moz-appearance: none;    /* Firefox */
-    appearance: none;         /* Standard property */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    transition: background 0.3s ease;
   }
+  
   .slider::-webkit-slider-thumb {
-    background: #004400;
-    width: 18px;
-    height: 18px;
+    background: #3498db; /* Blue thumb */
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #fff;
+    border: 2px solid #ffffff; /* White border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: background 0.3s ease;
   }
+  
   .slider::-moz-range-thumb {
-    background: #004400;
-    width: 18px;
-    height: 18px;
+    background: #3498db; /* Blue thumb */
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #fff;
+    border: 2px solid #ffffff; /* White border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: background 0.3s ease;
+  }
+  
+  .slider:hover {
+    background: #d0d0d0; /* Slightly darker track on hover */
+  }
+  
+  .slider::-webkit-slider-thumb:hover {
+    background: #2980b9; /* Darker blue thumb on hover */
+  }
+  
+  .slider::-moz-range-thumb:hover {
+    background: #2980b9; /* Darker blue thumb on hover */
   }
   
   /* Extra Repayments section */
   .extra-repayments {
     margin-top: 20px;
   }
+  
   .extra-repayments h4 {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    color: #2c3e50; /* Dark blue-gray */
+    font-weight: 600;
   }
+  
   .extra-repayments input {
     width: 100%;
-    padding: 5px;
+    padding: 10px;
     font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #e0e0e0; /* Light gray border */
+    border-radius: 8px;
     box-sizing: border-box;
     text-align: right;
+    transition: border-color 0.3s ease;
+  }
+  
+  .extra-repayments input:focus {
+    border-color: #3498db; /* Blue focus border */
+    outline: none;
+  }
+  
+  /* Reset Button */
+  .reset-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #3498db; /* Blue button */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .reset-button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
   }
   
   /* ===== REPAYMENT CHART SECTION ===== */
   .repayment-chart-section {
     margin: 0 20px 40px 20px;
   }
+  
   .chart-heading {
-    text-align: left;      /* Align left now */
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #003300;
-  }
-  #repaymentChart {
-    display: block;
-    max-width: 600px;
-    width: 100%;
-    height: 300px;
+    text-align: center; /* Center the text */
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c3e50; /* Dark blue-gray */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    gap: 10px; /* Space between text and dropdown */
   }
   
+  #repaymentChart {
+    display: block;
+    max-width: 800px;
+    width: 100%;
+    height: 400px;
+    margin: 0 auto;
+  }
+
+  /* Chart Container */
+.chart-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  #repaymentChart {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+  }
+
   .chart-heading select {
     margin-left: 10px;
-    padding: 5px;
-    border-radius: 4px;
-    vertical-align: middle;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0; /* Light gray border */
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .chart-heading select:focus {
+    border-color: #3498db; /* Blue focus border */
+    outline: none;
   }
   
   /* ===== SUMMARY SECTION ===== */
@@ -185,24 +286,60 @@
     margin: 0 20px 40px 20px;
   }
   
+  .summary h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #2c3e50; /* Dark blue-gray */
+    margin-bottom: 15px;
+  }
+  
   .summary table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #ffffff; /* White background */
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   }
   
   .summary table thead {
-    background-color: #003300; /* darker green */
-    color: #fff;               /* white text on green header */
+    background-color: #3498db; /* Blue header */
+    color: #ffffff; /* White text */
   }
   
   .summary table th,
   .summary table td {
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border: 1px solid #e0e0e0; /* Light gray border */
     text-align: center;
   }
   
   .summary table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f8f9fa; /* Light gray alternate rows */
   }
   
+  /* Error Message */
+  .error-message {
+    color: #e74c3c; /* Red error text */
+    text-align: center;
+    margin: 20px 0;
+    font-weight: 600;
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    .left-panel, .right-panel {
+      flex: 1 1 auto;
+    }
+    .loan-amount-input {
+      max-width: 100%;
+    }
+    .monthly-repayment {
+      font-size: 1.5rem;
+    }
+    #repaymentChart {
+      height: 300px;
+    }
+  }

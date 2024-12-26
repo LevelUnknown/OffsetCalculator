@@ -356,6 +356,14 @@ function buildChart() {
    3) Summarize + fill in the table
    4) Build chart 
 */
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.overlay');
+    sidebar.classList.toggle('active');
+    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+}
+
 function updateUI() {
   try {
     // Clear any previous error messages

@@ -8,37 +8,54 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Sidebar Menu -->
+  <div class="sidebar">
+    <div class="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="sidebar-content">
+      <a href="compliance/privacy-policy.html" onclick="closeSidebar()">Privacy Policy</a>
+      <a href="compliance/acceptable-use.html" onclick="closeSidebar()">Acceptable Use</a>
+      <a href="compliance/cookie-policy.html" onclick="closeSidebar()">Cookie Policy</a>
+      <a href="compliance/get-in-touch.html" onclick="closeSidebar()">Get in Touch</a>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" onclick="toggleSidebar()"></div>
+
   <!-- Title Bar -->
   <div class="title-bar">
     <svg
-  width="220"
-  height="40"
-  viewBox="0 0 240 40"
-  xmlns="http://www.w3.org/2000/svg"
-  style="display: block; margin: 0 auto;"
->
-  <rect x="0" y="0" width="220" height="40" rx="8" fill="#2c3e50"></rect> <!-- Dark blue-gray background -->
-  <text
-    x="50%"
-    y="50%"
-    text-anchor="middle"
-    alignment-baseline="middle"
-    fill="#ffffff"
-    font-family="Inter, sans-serif"
-    font-size="26"
-    font-weight="700"
-  >
-    <tspan font-weight="700">OFFSET</tspan> Calculator
-  </text>
-</svg>
+      width="220"
+      height="40"
+      viewBox="0 0 240 40"
+      xmlns="http://www.w3.org/2000/svg"
+      style="display: block; margin: 0 auto;"
+    >
+      <rect x="0" y="0" width="220" height="40" rx="8" fill="#2c3e50"></rect>
+      <text
+        x="50%"
+        y="50%"
+        text-anchor="middle"
+        alignment-baseline="middle"
+        fill="#ffffff"
+        font-family="Inter, sans-serif"
+        font-size="26"
+        font-weight="700"
+      >
+        <tspan font-weight="700">OFFSET</tspan> Calculator
+      </text>
+    </svg>
   </div>
 
-  <!-- Container for left and right panels -->
+  <!-- Rest of your existing HTML content -->
   <div class="container">
     <!-- LEFT PANEL: Loan Amount, Payment Info -->
     <div class="left-panel">
       <h2>Current outstanding loan</h2>
-
       <input
         id="loanAmount"
         type="text"
@@ -56,7 +73,6 @@
         class="slider"
         aria-label="Loan Amount Range"
       />
-
       <p class="monthly-repayment">
         <strong>Estimated Repayments:</strong>
         <span id="monthlyRepaymentValue">$9,894</span>
@@ -185,5 +201,22 @@
 
   <!-- Link to your script.js -->
   <script src="script.js"></script>
+  <script>
+    // Toggle sidebar function
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.overlay');
+      sidebar.classList.toggle('active');
+      overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+    }
+
+    // Close sidebar function
+    function closeSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.overlay');
+      sidebar.classList.remove('active');
+      overlay.style.display = 'none';
+    }
+  </script>
 </body>
 </html>

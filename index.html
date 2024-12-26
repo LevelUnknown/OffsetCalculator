@@ -16,10 +16,10 @@
       <div class="bar"></div>
     </div>
     <div class="sidebar-content">
-      <a href="compliance/privacy-policy.html" onclick="closeSidebar()">Privacy Policy</a>
-      <a href="compliance/acceptable-use.html" onclick="closeSidebar()">Acceptable Use</a>
-      <a href="compliance/cookie-policy.html" onclick="closeSidebar()">Cookie Policy</a>
-      <a href="compliance/get-in-touch.html" onclick="closeSidebar()">Get in Touch</a>
+      <a href="#" data-file="compliance/privacy-policy.html" onclick="loadContent(event, this)">Privacy Policy</a>
+      <a href="#" data-file="compliance/acceptable-use.html" onclick="loadContent(event, this)">Acceptable Use</a>
+      <a href="#" data-file="compliance/cookie-policy.html" onclick="loadContent(event, this)">Cookie Policy</a>
+      <a href="#" data-file="compliance/get-in-touch.html" onclick="loadContent(event, this)">Get in Touch</a>
     </div>
   </div>
 
@@ -50,6 +50,9 @@
       </text>
     </svg>
   </div>
+
+  <!-- Content Container -->
+  <div id="content"></div>
 
   <!-- Rest of your existing HTML content -->
   <div class="container">
@@ -216,6 +219,43 @@
       const overlay = document.querySelector('.overlay');
       sidebar.classList.remove('active');
       overlay.style.display = 'none';
+    }
+
+    // Load content dynamically
+    function loadContent(event, link) {
+      event.preventDefault();
+      const file = link.getAttribute('data-file');
+      fetch(file)
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          let content = doc.body.innerHTML;
+          // Remove script tags
+          const temp = document.createElement('div');
+          temp.innerHTML = content;
+          temp.querySelectorAll('script').forEach(script => script.remove());
+          content = temp.innerHTML;
+          const contentDiv = document.getElementById('content');
+          contentDiv.innerHTML = content;
+          contentDiv.style.display = 'block';
+          // Add close button
+          const closeButton = document.createElement('button');
+          closeButton.textContent = 'Close';
+          closeButton.style.float = 'right';
+          closeButton.style.margin = '10px';
+          closeButton.addEventListener('click', () => {
+            contentDiv.innerHTML = '';
+            contentDiv.style.display = 'none';
+          });
+          contentDiv.appendChild(closeButton);
+          closeSidebar();
+        })
+        .catch(error => {
+          console.error('Error loading content:', error);
+          document.getElementById('content').innerHTML = '<p>Error loading content.</p>';
+          closeSidebar();
+        });
     }
   </script>
 </body>

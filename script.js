@@ -1,10 +1,3 @@
-/*
-  script.js — Mortgage with offset, single "Loan term (years)".
-  Removed "Interest Rate Type" field. 
-  Extra monthly repayments automatically scale if user changes 
-  monthly/fortnightly/weekly so that it remains the "same annual extra contribution."
-*/
-
 /* ==== DOM REFERENCES ==== */
 const loanAmountEl = document.getElementById('loanAmount');
 const offsetBalanceEl = document.getElementById('offsetBalance');
@@ -349,6 +342,7 @@ function buildChart() {
         },
     });
 }
+
 /*
    MAIN UI Update:
    1) Quick naive estimate
@@ -356,14 +350,6 @@ function buildChart() {
    3) Summarize + fill in the table
    4) Build chart 
 */
-
-function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.querySelector('.overlay');
-    sidebar.classList.toggle('active');
-    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-}
-
 function updateUI() {
   try {
     // Clear any previous error messages
@@ -486,6 +472,68 @@ resetButton.addEventListener('click', () => {
   chartPeriodSelect.value = 'month';
   baseExtraMonthly = 0;
   updateUI();
+});
+
+// Sidebar and Content Loading Functions
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.overlay');
+  sidebar.classList.toggle('active');
+  overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+}
+
+function closeSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.overlay');
+  sidebar.classList.remove('active');
+  overlay.style.display = 'none';
+}
+
+function loadContent(event, link) {
+  event.preventDefault();
+  const file = link.getAttribute('data-file');
+  console.log(`Loading file: ${file}`); // Debugging
+  fetch(file)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Failed to load file: ${file}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      let content = doc.body.innerHTML;
+      // Remove script tags
+      const temp = document.createElement('div');
+      temp.innerHTML = content;
+      temp.querySelectorAll('script').forEach(script => script.remove());
+      content = temp.innerHTML;
+      const contentDiv = document.getElementById('content');
+      contentDiv.innerHTML = content;
+      contentDiv.style.display = 'block';
+      // Add close button
+      const closeButton = document.createElement('button');
+      closeButton.textContent = 'Close';
+      closeButton.style.float = 'right';
+      closeButton.style.margin = '10px';
+      closeButton.addEventListener('click', () => {
+        contentDiv.innerHTML = '';
+        contentDiv.style.display = 'none';
+      });
+      contentDiv.appendChild(closeButton);
+      closeSidebar();
+    })
+    .catch(error => {
+      console.error('Error loading content:', error);
+      document.getElementById('content').innerHTML = `<p>Error loading content: ${error.message}</p>`;
+      closeSidebar();
+    });
+}
+
+// Event Listeners for Sidebar Links
+document.querySelectorAll('.sidebar-content a').forEach(link => {
+  link.addEventListener('click', (event) => loadContent(event, link));
 });
 
 // Init
